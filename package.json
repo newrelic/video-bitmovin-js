@@ -10,16 +10,17 @@
     "watch:dev": "webpack --progress --color --watch",
     "prezip": "npm run build && rm -f dist/*.map",
     "zip": "zip -P newrelic -x '*.DS_Store' -x 'samples/agent.js' -r bitmovin.zip dist samples README.md CHANGELOG.md EULA.md",
-    "clean": "rm -rf dist *.zip"
+    "clean": "rm -rf dist *.zip",
+    "deploy": "node scripts/deploy.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@source.datanerd.us:video/bitmovin-js.git"
+    "url": "https://github.com/newrelic/video-bitmovin-js.git"
   },
   "author": "Jordi Aguilar",
   "license": "MIT",
   "dependencies": {
-    "newrelic-video-core": "https://source.datanerd.us/api/v3/repos/video/core-js/tarball/master?access_token=a0ffea13c434546f2378ab5244846bb1a3d0a690"
+    "newrelic-video-core": "git+https://github.com/newrelic/video-core-js.git#v0.9.1"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
