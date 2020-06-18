@@ -1,6 +1,5 @@
 import * as nrvideo from 'newrelic-video-core'
 import { version } from '../package.json'
-import BitmovinAdsTracker from './ads'
 
 export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor (player, options) {
@@ -8,6 +7,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
 
     this._contentState = this.state
     this._adState = new nrvideo.VideoTrackerState()
+    this._trackerReadySent = false
   }
 
   setIsAd (ad) {
@@ -244,10 +244,12 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onReady () {
-    this.sendPlayerReady()
-
-    // Set tag element
-    if (!this.tag || this.tag === this.player) this.tag = this.player.getVideoElement()
+    if (!this._trackerReadySent) {
+      this.sendPlayerReady()
+      this._trackerReadySent = true
+      // Set tag element
+      if (!this.tag || this.tag === this.player) this.tag = this.player.getVideoElement()
+    }
   }
 
   onPlay () {
@@ -301,9 +303,4 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   onQualityChange () {
     this.sendRenditionChanged()
   }
-}
-
-// Static members
-export {
-  BitmovinAdsTracker
 }
