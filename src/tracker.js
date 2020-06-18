@@ -264,7 +264,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onFinish () {
-    this.sendStop()
+    this.sendEnd()
   }
 
   onError (e) {
