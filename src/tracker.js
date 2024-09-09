@@ -110,114 +110,146 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   registerListeners () {
-    let ev = bitmovin.player.EVENT
+    let ev = bitmovin.player.PlayerEvent
+
+    console.log("Player", this.player)
 
     nrvideo.Log.debugCommonVideoEvents(this.player, [
       null,
-      ev.ON_AD_CLICKED,
-      ev.ON_AD_ERROR,
-      ev.ON_AD_FINISHED,
-      ev.ON_AD_LINEARITY_CHANGED,
-      ev.ON_AD_MANIFEST_LOADED,
-      ev.ON_AD_PLAYBACK_FINISHED,
-      ev.ON_AD_SCHEDULED,
-      ev.ON_AD_SKIPPED,
-      ev.ON_AD_STARTED,
-      ev.ON_AIRPLAY_AVAILABLE,
-      ev.ON_AUDIO_ADDED,
-      ev.ON_AUDIO_CHANGED,
-      ev.ON_AUDIO_QUALITY_CHANGED,
-      ev.ON_AUDIO_REMOVED,
-      ev.ON_CAST_AVAILABLE,
-      ev.ON_CAST_PAUSED,
-      ev.ON_CAST_PLAYBACK_FINISHED,
-      ev.ON_CAST_PLAYING,
-      ev.ON_CAST_START,
-      ev.ON_CAST_STARTED,
-      ev.ON_CAST_STOPPED,
-      ev.ON_CAST_TIME_UPDATED,
-      ev.ON_CAST_WAITING_FOR_DEVICE,
-      ev.ON_CUE_ENTER,
-      ev.ON_CUE_EXIT,
-      ev.ON_CUE_UPDATE,
-      ev.ON_DESTROY,
-      ev.ON_DVR_WINDOW_EXCEEDED,
-      ev.ON_ERROR,
-      ev.ON_FULLSCREEN_ENTER,
-      ev.ON_FULLSCREEN_EXIT,
-      ev.ON_HIDE_CONTROLS,
-      ev.ON_METADATA,
-      ev.ON_MUTED,
-      ev.ON_PAUSED,
-      ev.ON_PERIOD_SWITCH,
-      ev.ON_PERIOD_SWITCHED,
-      ev.ON_PICTURE_IN_PICTURE_ENTER,
-      ev.ON_PICTURE_IN_PICTURE_EXIT,
-      ev.ON_PLAY,
-      ev.ON_PLAYBACK_FINISHED,
-      ev.ON_PLAYER_CREATED,
-      ev.ON_PLAYER_RESIZE,
-      ev.ON_PLAYING,
-      ev.ON_READY,
-      ev.ON_SEEK,
-      ev.ON_SEEKED,
-      ev.ON_SEGMENT_PLAYBACK,
-      ev.ON_SHOW_AIRPLAY_TARGET_PICKER,
-      ev.ON_SHOW_CONTROLS,
-      ev.ON_SOURCE_LOADED,
-      ev.ON_SOURCE_UNLOADED,
-      ev.ON_STALL_ENDED,
-      ev.ON_STALL_STARTED,
-      ev.ON_UNMUTED,
-      ev.ON_VIDEO_QUALITY_CHANGED,
-      ev.ON_VOLUME_CHANGED,
-      ev.ON_VR_STEREO_CHANGED,
-      ev.ON_VR_VIEWING_DIRECTION_CHANGE,
-      ev.ON_VR_VIEWING_DIRECTION_CHANGED,
-      ev.ON_WARNING
+      ev.AdBreakFinished,
+      ev.AdBreakStarted,
+      ev.AdClicked,
+      ev.AdError,
+      ev.AdFinished,
+      ev.AdInteraction,
+      ev.AdLinearityChanged,
+      ev.AdManifestLoaded,
+      ev.AdQuartile,
+      ev.AdSkipped,
+      ev.AdStarted,
+      ev.AirplayAvailable,
+      ev.AirplayChanged,
+      ev.AspectRatioChanged,
+      ev.AudioAdaptation,
+      ev.AudioAdded,
+      ev.AudioChanged,
+      ev.AudioDownloadQualityChange,
+      ev.AudioDownloadQualityChanged,
+      ev.AudioPlaybackQualityChanged,
+      ev.AudioQualityAdded,
+      ev.AudioQualityChanged,
+      ev.AudioQualityRemoved,
+      ev.AudioRemoved,
+      ev.CastAvailable,
+      ev.CastStart,
+      ev.CastStarted,
+      ev.CastStopped,
+      ev.CastWaitingForDevice,
+      ev.CueEnter,
+      ev.CueExit,
+      ev.CueParsed,
+      ev.CueUpdate,
+      ev.DVRWindowExceeded,
+      ev.Destroy,
+      ev.DownloadFinished,
+      ev.DrmLicenseAdded,
+      ev.DurationChanged,
+      ev.Error,
+      ev.LatencyModeChanged,
+      ev.LicenseValidated,
+      ev.Metadata,
+      ev.MetadataChanged,
+      ev.MetadataParsed,
+      ev.ModuleReady,
+      ev.Muted,
+      ev.OverlayAdStarted,
+      ev.Paused,
+      ev.PeriodSwitch,
+      ev.PeriodSwitched,
+      ev.Play,
+      ev.PlaybackFinished,
+      ev.PlaybackSpeedChanged,
+      ev.PlayerResized,
+      ev.Playing,
+      ev.Ready,
+      ev.Seek,
+      ev.Seeked,
+      ev.SegmentPlayback,
+      ev.SegmentRequestFinished,
+      ev.ShowAirplayTargetPicker,
+      ev.SourceLoaded,
+      ev.SourceUnloaded,
+      ev.StallEnded,
+      ev.StallStarted,
+      ev.SubtitleAdded,
+      ev.SubtitleDisable,
+      ev.SubtitleDisabled,
+      ev.SubtitleEnable,
+      ev.SubtitleEnabled,
+      ev.SubtitleRemoved,
+      ev.TargetLatencyChanged,
+      ev.TimeChanged,
+      ev.TimeShift,
+      ev.TimeShifted,
+      ev.Unmuted,
+      ev.VRStereoChanged,
+      ev.VRViewingDirectionChange,
+      ev.VRViewingDirectionChanged,
+      ev.VideoAdaptation,
+      ev.VideoDownloadQualityChange,
+      ev.VideoDownloadQualityChanged,
+      ev.VideoPlaybackQualityChanged,
+      ev.VideoQualityAdded,
+      ev.VideoQualityChanged,
+      ev.VideoQualityRemoved,
+      ev.ViewModeChanged,
+      ev.VolumeChanged,
+      ev.Warning
     ])
 
-    this.player.addEventHandler(ev.ON_AD_STARTED, this.onAdStarted.bind(this))
-    this.player.addEventHandler(ev.ON_AD_FINISHED, this.onAdFinished.bind(this))
-    this.player.addEventHandler(ev.ON_AD_SKIPPED, this.onAdSkipped.bind(this))
-    this.player.addEventHandler(ev.ON_AD_CLICKED, this.onAdClicked.bind(this))
-    this.player.addEventHandler(ev.ON_AD_ERROR, this.onAdError.bind(this))
+    this.player.on(ev.AdStarted, this.onAdStarted.bind(this))
+    this.player.on(ev.AdFinished, this.onAdFinished.bind(this))
+    this.player.on(ev.AdSkipped, this.onAdSkipped.bind(this))
+    this.player.on(ev.AdClicked, this.onAdClicked.bind(this))
+    this.player.on(ev.AdError, this.onAdError.bind(this))
 
-    this.player.addEventHandler(ev.ON_READY, this.onReady.bind(this))
-    this.player.addEventHandler(ev.ON_PLAY, this.onPlay.bind(this))
-    this.player.addEventHandler(ev.ON_PLAYING, this.onPlaying.bind(this))
-    this.player.addEventHandler(ev.ON_PAUSED, this.onPaused.bind(this))
-    this.player.addEventHandler(ev.ON_PLAYBACK_FINISHED, this.onFinish.bind(this))
-    this.player.addEventHandler(ev.ON_ERROR, this.onError.bind(this))
-    this.player.addEventHandler(ev.ON_SEEK, this.onSeek.bind(this))
-    this.player.addEventHandler(ev.ON_SEEKED, this.onSeeked.bind(this))
-    this.player.addEventHandler(ev.ON_STALL_STARTED, this.onStallStart.bind(this))
-    this.player.addEventHandler(ev.ON_STALL_ENDED, this.onStallEnded.bind(this))
-    this.player.addEventHandler(ev.ON_SEGMENT_PLAYBACK, this.onSegmentPlayback.bind(this))
-    this.player.addEventHandler(ev.ON_VIDEO_QUALITY_CHANGED, this.onQualityChange.bind(this))
+    this.player.on(ev.Ready, this.onReady.bind(this))
+    this.player.on(ev.Play, this.onPlay.bind(this))
+    this.player.on(ev.Playing, this.onPlaying.bind(this))
+    this.player.on(ev.Paused, this.onPaused.bind(this))
+    this.player.on(ev.PlaybackFinished, this.onFinish.bind(this))
+    this.player.on(ev.Error, this.onError.bind(this))
+    this.player.on(ev.Seek, this.onSeek.bind(this))
+    this.player.on(ev.Seeked, this.onSeeked.bind(this))
+    this.player.on(ev.StallStarted, this.onStallStart.bind(this))
+    this.player.on(ev.StallEnded, this.onStallEnded.bind(this))
+    this.player.on(ev.SegmentPlayback, this.onSegmentPlayback.bind(this))
+    // TODO: The event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
+    this.player.on(ev.VideoPlaybackQualityChanged, this.onQualityChange.bind(this))
   }
 
   unregisterListeners () {
     let ev = bitmovin.player.EVENT
 
-    this.player.removeEventHandler(ev.ON_AD_STARTED, this.onAdStarted)
-    this.player.removeEventHandler(ev.ON_AD_FINISHED, this.onAdFinished)
-    this.player.removeEventHandler(ev.ON_AD_SKIPPED, this.onAdSkipped)
-    this.player.removeEventHandler(ev.ON_AD_CLICKED, this.onAdClicked)
-    this.player.removeEventHandler(ev.ON_AD_ERROR, this.onAdError)
+    this.player.off(ev.AdStarted, this.onAdStarted)
+    this.player.off(ev.AdFinished, this.onAdFinished)
+    this.player.off(ev.AdSkipped, this.onAdSkipped)
+    this.player.off(ev.AdClicked, this.onAdClicked)
+    this.player.off(ev.AdError, this.onAdError)
 
-    this.player.removeEventHandler(ev.ON_READY, this.onReady)
-    this.player.removeEventHandler(ev.ON_PLAY, this.onPlay)
-    this.player.removeEventHandler(ev.ON_PLAYING, this.onPlaying)
-    this.player.removeEventHandler(ev.ON_PAUSED, this.onPaused)
-    this.player.removeEventHandler(ev.ON_PLAYBACK_FINISHED, this.onFinish)
-    this.player.removeEventHandler(ev.ON_ERROR, this.onError)
-    this.player.removeEventHandler(ev.ON_SEEK, this.onSeek)
-    this.player.removeEventHandler(ev.ON_SEEKED, this.onSeeked)
-    this.player.removeEventHandler(ev.ON_STALL_STARTED, this.onStallStart)
-    this.player.removeEventHandler(ev.ON_STALL_ENDED, this.onStallEnded)
-    this.player.removeEventHandler(ev.ON_SEGMENT_PLAYBACK, this.onSegmentPlayback)
-    this.player.removeEventHandler(ev.ON_VIDEO_QUALITY_CHANGED, this.onQualityChange)
+    this.player.off(ev.Ready, this.onReady)
+    this.player.off(ev.Play, this.onPlay)
+    this.player.off(ev.Playing, this.onPlaying)
+    this.player.off(ev.Paused, this.onPaused)
+    this.player.off(ev.PlaybackFinished, this.onFinish)
+    this.player.off(ev.Error, this.onError)
+    this.player.off(ev.Sekk, this.onSeek)
+    this.player.off(ev.Seeked, this.onSeeked)
+    this.player.off(ev.StallStarted, this.onStallStart)
+    this.player.off(ev.StallEnded, this.onStallEnded)
+    this.player.off(ev.SegmentPlayback, this.onSegmentPlayback)
+    // TODO: The event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
+    this.player.off(ev.VideoPlaybackQualityChanged, this.onQualityChange)
   }
 
   onAdStarted () {

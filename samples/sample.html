@@ -6,7 +6,8 @@
   <!-- new relic tracker -->
   <script src="../dist/newrelic-video-bitmovin.min.js"></script>
   <!-- bitdash player -->
-  <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7.4/bitmovinplayer.js"></script>
+  <!--<script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8.1.0/bitmovinplayer.js"></script>-->
+  <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js" type="text/javascript"></script>
 </head>
 <body background="http://bitmovin-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
 <div class="container">
@@ -28,25 +29,20 @@
     };
 
     // Init player
-    var player = bitmovin.player('player')
+    const player = new bitmovin.player.Player(document.getElementById('player'), conf);
     
     // Init New Relic Tracker  
     nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player))
 
-    player.setup(conf).then(function(value) {        
-      player.scheduleAd(
-        'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/32573358/skippable_ad_unit&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&url=[	referrer_url]&description_url=[description_url]&correlator=[timestamp]', 
-        'VAST', 
-        {
-          'timeOffset': 0, 
-          'pertistant': true, 
-          'adMessage': 'scheduledAd'
-        }
-      )
-    }, function(reason) {
-      // Report error at init
-      nrvideo.Core.sendError({ message: reason })
-    });
+    // TODO: setup Ads
+    player.load(conf.source).then(
+    player => {
+        console.log('Successfully created Bitmovin Player instance')
+    },
+    reason => {
+        console.log('Error while creating Bitmovin Player instance')
+    }
+);
 </script>
 </body>
 </html>
