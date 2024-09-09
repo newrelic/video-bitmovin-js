@@ -213,6 +213,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     this.player.on(ev.AdClicked, this.onAdClicked.bind(this))
     this.player.on(ev.AdError, this.onAdError.bind(this))
 
+    this.player.on(ev.SourceLoaded, this.onDownload.bind(this))
     this.player.on(ev.Ready, this.onReady.bind(this))
     this.player.on(ev.Play, this.onPlay.bind(this))
     this.player.on(ev.Playing, this.onPlaying.bind(this))
@@ -237,6 +238,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     this.player.off(ev.AdClicked, this.onAdClicked)
     this.player.off(ev.AdError, this.onAdError)
 
+    this.player.off(ev.SourceLoaded, this.onDownload.bind(this))
     this.player.off(ev.Ready, this.onReady)
     this.player.off(ev.Play, this.onPlay)
     this.player.off(ev.Playing, this.onPlaying)
@@ -273,6 +275,10 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
 
   onAdError (e) {
     this.sendError({ message: 'ad error' })
+  }
+
+  onDownload (e) {
+    this.sendDownload({ state: e.type })
   }
 
   onReady () {

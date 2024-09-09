@@ -73,7 +73,6 @@ Due to the information exposed by player provider, this tracker may not be able 
 - adPosition attribute
 - AD_QUARTILE events
 - AD_BREAK events
-- DOWNLOAD events
 
 ### Buffering
 
