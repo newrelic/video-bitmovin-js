@@ -35,25 +35,34 @@ Load **scripts** inside `dist` folder into your page.
 Init the tracker as follows:
 
 ```js
+  var conf = {
+    key:       "...key...",
+    source: {
+      dash:        "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+      hls:         "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+      progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
+      poster:      "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+    }
+  };
   // Init player
-  var player = bitmovin.player("player")
-  
-  // Init New Relic Tracker  
+  const player = new bitmovin.player.Player(document.getElementById('player'), conf);
+  // Init tracker
   nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player))
-  
-  player.setup(conf)
+  // Load content
+  player.load(conf.source)
 ```
-
 
 ### Report init errors
 
 You can use bitmovin's promise error callback to report failed player setups:
 
 ```js
-  player.setup(conf).then(success, fail)
-
-  function fail (reason) {
-    nrvideo.Core.sendError({message: reason})
+  player.load(conf.source).then(
+  player => {
+      console.log('Successfully created Bitmovin Player instance')
+  },
+  reason => {
+      console.log('Error while creating Bitmovin Player instance')
   }
 ```
 
