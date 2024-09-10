@@ -229,7 +229,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   unregisterListeners () {
-    let ev = bitmovin.player.EVENT
+    let ev = bitmovin.player.PlayerEvent
 
     this.player.off(ev.AdStarted, this.onAdStarted)
     this.player.off(ev.AdFinished, this.onAdFinished)
