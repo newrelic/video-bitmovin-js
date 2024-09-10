@@ -80,7 +80,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   getPlayerVersion () {
-    return bitmovin.player.version
+    return this.player.version
   }
 
   isMuted () {
@@ -112,8 +112,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   registerListeners () {
     let ev = bitmovin.player.PlayerEvent
 
-    console.log("Player", this.player)
-
+    //NOTE: event that are too verbose are commented out.
     nrvideo.Log.debugCommonVideoEvents(this.player, [
       null,
       ev.AdBreakFinished,
