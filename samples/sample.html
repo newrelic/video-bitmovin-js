@@ -46,7 +46,6 @@
     // Init New Relic Tracker  
     nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player))
 
-    // TODO: setup Ads
     player.load(conf.source).then(
     player => {
         console.log('Successfully created Bitmovin Player instance')
