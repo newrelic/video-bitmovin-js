@@ -1,26 +1,11 @@
 import * as nrvideo from 'newrelic-video-core'
 import { version } from '../package.json'
+import { BitmovinAdTracker } from './ads'
 
 export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor (player, options) {
     super(player, options)
-
-    this._contentState = this.state
-    this._adState = new nrvideo.VideoTrackerState()
     this._trackerReadySent = false
-  }
-
-  setIsAd (ad) {
-    this.state = ad ? this._adState : this._contentState
-    nrvideo.VideoTracker.prototype.setIsAd.call(this, ad) // super
-  }
-
-  getViewId () {
-    return this._contentState.getViewId()
-  }
-
-  getViewSession () {
-    return this._contentState.getViewSession()
   }
 
   getTrackerName () {
@@ -206,12 +191,6 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
       ev.Warning
     ])
 
-    this.player.on(ev.AdStarted, this.onAdStarted.bind(this))
-    this.player.on(ev.AdFinished, this.onAdFinished.bind(this))
-    this.player.on(ev.AdSkipped, this.onAdSkipped.bind(this))
-    this.player.on(ev.AdClicked, this.onAdClicked.bind(this))
-    this.player.on(ev.AdError, this.onAdError.bind(this))
-
     this.player.on(ev.SourceLoaded, this.onDownload.bind(this))
     this.player.on(ev.Ready, this.onReady.bind(this))
     this.player.on(ev.Play, this.onPlay.bind(this))
@@ -224,20 +203,14 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     this.player.on(ev.StallStarted, this.onStallStart.bind(this))
     this.player.on(ev.StallEnded, this.onStallEnded.bind(this))
     this.player.on(ev.SegmentPlayback, this.onSegmentPlayback.bind(this))
-    // TODO: The event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
+    // NOTE: In Bitmovin v7 the event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
     this.player.on(ev.VideoPlaybackQualityChanged, this.onQualityChange.bind(this))
   }
 
   unregisterListeners () {
     let ev = bitmovin.player.PlayerEvent
 
-    this.player.off(ev.AdStarted, this.onAdStarted)
-    this.player.off(ev.AdFinished, this.onAdFinished)
-    this.player.off(ev.AdSkipped, this.onAdSkipped)
-    this.player.off(ev.AdClicked, this.onAdClicked)
-    this.player.off(ev.AdError, this.onAdError)
-
-    this.player.off(ev.SourceLoaded, this.onDownload.bind(this))
+    this.player.off(ev.SourceLoaded, this.onDownload)
     this.player.off(ev.Ready, this.onReady)
     this.player.off(ev.Play, this.onPlay)
     this.player.off(ev.Playing, this.onPlaying)
@@ -249,31 +222,8 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     this.player.off(ev.StallStarted, this.onStallStart)
     this.player.off(ev.StallEnded, this.onStallEnded)
     this.player.off(ev.SegmentPlayback, this.onSegmentPlayback)
-    // TODO: The event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
+    // NOTE: In Bitmovin v7 the event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
     this.player.off(ev.VideoPlaybackQualityChanged, this.onQualityChange)
-  }
-
-  onAdStarted () {
-    this.setIsAd(true)
-    this.sendRequest()
-  }
-
-  onAdSkipped () {
-    this.sendEnd({ skipped: true })
-    this.setIsAd(false)
-  }
-
-  onAdFinished () {
-    this.sendEnd()
-    this.setIsAd(false)
-  }
-
-  onAdClicked (e) {
-    this.sendAdClick({ url: e.clickThroughUrl })
-  }
-
-  onAdError (e) {
-    this.sendError({ message: 'ad error' })
   }
 
   onDownload (e) {
@@ -286,6 +236,10 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
       this._trackerReadySent = true
       // Set tag element
       if (!this.tag || this.tag === this.player) this.tag = this.player.getVideoElement()
+    }
+
+    if (!this.adsTracker) {
+      this.setAdsTracker(new BitmovinAdTracker(this.player))
     }
   }
 

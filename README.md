@@ -66,14 +66,6 @@ You can use bitmovin's promise error callback to report failed player setups:
   }
 ```
 
-## Known Limitations
-
-Due to the information exposed by player provider, this tracker may not be able to report:
-
-- adPosition attribute
-- AD_QUARTILE events
-- AD_BREAK events
-
 ### Buffering
 
 If the players works with *progressive download* files (mp3, webm...) you may encounter `buffering` events after a seek, as that's the player behavior.
