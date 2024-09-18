@@ -86,7 +86,7 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
       case "firstQuartile":
         q = 1;
         break;
-      case "secondQuartile":
+      case "midpoint":
         q = 2;
         break;
       case "thirdQuartile":
