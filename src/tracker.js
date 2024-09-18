@@ -261,7 +261,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onError (e) {
-    this.sendError(e)
+    this.sendError({code: e.code, message: e.message})
   }
 
   onSeek () {

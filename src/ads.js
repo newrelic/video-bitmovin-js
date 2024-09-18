@@ -97,7 +97,6 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   }
 
   onAdError (e) {
-    //TODO: get message from error object
-    this.sendError({ message: 'ad error' })
+    this.sendError({code: e.code, message: e.message})
   }
 }
