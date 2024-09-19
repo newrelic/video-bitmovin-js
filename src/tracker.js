@@ -57,10 +57,12 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   getSrc () {
-    if (this.player.getStreamType() === 'progressive') {
-      return this.tag.currentSrc
+    let source = this.player.getSource();
+    let streamType = this.player.getStreamType();
+    if (streamType in source) {
+      return source[streamType];
     } else {
-      return this.player.getManifest()
+      return "unknown";
     }
   }
 
@@ -234,8 +236,6 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     if (!this._trackerReadySent) {
       this.sendPlayerReady()
       this._trackerReadySent = true
-      // Set tag element
-      if (!this.tag || this.tag === this.player) this.tag = this.player.getVideoElement()
     }
 
     if (!this.adsTracker) {
