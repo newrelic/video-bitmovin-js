@@ -11,17 +11,21 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
     return version
   }
 
-  getAdPosition () {
-    switch (this.player.ads.getActiveAdBreak().position) {
-      case 'pre':
-        return nrvideo.Constants.AdPositions.PRE
-      case 'post':
-        return nrvideo.Constants.AdPositions.POST
-      // For mid-roll, position is a number: https://cdn.bitmovin.com/player/web/8/docs/interfaces/advertising.adbreakconfig.html#position
-      default:
-        return nrvideo.Constants.AdPositions.MID
-    }
-  }
+  // NOTE: This is causing a strange error, making the JS execution abort.
+  // Tested with:
+  // - Bitmovin 8.181.0
+  // - Firefox 129.0 (mac)
+  // getAdPosition () {
+  //   switch (this.player.ads.getActiveAdBreak().position) {
+  //     case 'pre':
+  //       return nrvideo.Constants.AdPositions.PRE
+  //     case 'post':
+  //       return nrvideo.Constants.AdPositions.POST
+  //     // For mid-roll, position is a number: https://cdn.bitmovin.com/player/web/8/docs/interfaces/advertising.adbreakconfig.html#position
+  //     default:
+  //       return nrvideo.Constants.AdPositions.MID
+  //   }
+  // }
 
   registerListeners () {
     console.log("Ads registerListeners", this)
