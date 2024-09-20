@@ -49,6 +49,7 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
     this.player.off(ev.AdFinished, this.onAdFinished)
     this.player.off(ev.AdSkipped, this.onAdSkipped)
     this.player.off(ev.AdClicked, this.onAdClicked)
+    this.player.off(ev.AdQuartile, this.onAdQuartile)
     this.player.off(ev.AdError, this.onAdError)
   }
 
