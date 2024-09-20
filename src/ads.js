@@ -28,7 +28,6 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   // }
 
   registerListeners () {
-    console.log("Ads registerListeners", this)
     let ev = bitmovin.player.PlayerEvent
 
     this.player.on(ev.AdBreakStarted, this.onAdBreakStarted.bind(this))
@@ -54,19 +53,14 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   }
 
   onAdBreakStarted (ev) {
-    console.log("Ad break started ev = ", ev)
     this.sendAdBreakStart()
-    console.log("Ad tracker after sendAdBreakStart =", this)
   }
 
   onAdBreakFinished (ev) {
-    console.log("Ad break finished ev = ", ev, this)
-    console.log("Ad tracker before sendAdBreakEnd =", this)
     this.sendAdBreakEnd()
   }
 
   onAdStarted (e) {
-    console.log("Ad srarted =", e)
     this.sendRequest()
     this.sendStart()
   }
@@ -84,7 +78,6 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   }
 
   onAdQuartile (e) {
-    console.log("Quartile = ", e)
     let q = 0;
     switch (e.quartile) {
       case "firstQuartile":
