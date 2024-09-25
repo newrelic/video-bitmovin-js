@@ -6,7 +6,7 @@
   <!-- new relic tracker -->
   <script src="../dist/newrelic-video-bitmovin.min.js"></script>
   <!-- bitdash player -->
-  <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7.4/bitmovinplayer.js"></script>
+  <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js" type="text/javascript"></script>
 </head>
 <body background="http://bitmovin-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
 <div class="container">
@@ -19,6 +19,22 @@
 <script type="text/javascript">
     var conf = {
       key:       "c275421b-860d-4361-b2a6-0d92c945e2f3",
+      advertising: {
+        adBreaks: [
+          {
+            tag: {
+              type: 'vast',
+              // More Ad Samples can be found here:
+              // https://developers.google.com/interactive-media-ads/docs/sdks/html5/client-side/tags
+              url:
+                // Pre, mid and post ads.
+                'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpostpod&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator='
+                // Pre ad only.
+                //'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator='
+            }
+          }
+        ]
+      },
       source: {
         dash:        "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
         hls:         "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
@@ -28,25 +44,19 @@
     };
 
     // Init player
-    var player = bitmovin.player('player')
+    const player = new bitmovin.player.Player(document.getElementById('player'), conf);
     
     // Init New Relic Tracker  
     nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player))
 
-    player.setup(conf).then(function(value) {        
-      player.scheduleAd(
-        'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/32573358/skippable_ad_unit&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&url=[	referrer_url]&description_url=[description_url]&correlator=[timestamp]', 
-        'VAST', 
-        {
-          'timeOffset': 0, 
-          'pertistant': true, 
-          'adMessage': 'scheduledAd'
-        }
-      )
-    }, function(reason) {
-      // Report error at init
-      nrvideo.Core.sendError({ message: reason })
-    });
+    player.load(conf.source).then(
+    player => {
+        console.log('Successfully created Bitmovin Player instance')
+    },
+    reason => {
+        console.log('Error while creating Bitmovin Player instance')
+    }
+);
 </script>
 </body>
 </html>
