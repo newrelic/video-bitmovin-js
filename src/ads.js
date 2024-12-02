@@ -1,14 +1,17 @@
-import * as nrvideo from 'newrelic-video-core'
-import { version } from '../package.json'
+import * as nrvideo from "newrelic-video-core";
+import { version } from "../package.json";
 
 export class BitmovinAdTracker extends nrvideo.VideoTracker {
-
-  getTrackerName () {
-    return 'bitmovin-ads'
+  constructor(player) {
+    super(player);
   }
 
-  getTrackerVersion () {
-    return version
+  getTrackerName() {
+    return "bitmovin-ads";
+  }
+
+  getTrackerVersion() {
+    return version;
   }
 
   // NOTE: This is causing a strange error, making the JS execution abort.
@@ -27,58 +30,58 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   //   }
   // }
 
-  registerListeners () {
-    let ev = bitmovin.player.PlayerEvent
+  registerListeners() {
+    let ev = bitmovin.player.PlayerEvent;
 
-    this.player.on(ev.AdBreakStarted, this.onAdBreakStarted.bind(this))
-    this.player.on(ev.AdBreakFinished, this.onAdBreakFinished.bind(this))
-    this.player.on(ev.AdStarted, this.onAdStarted.bind(this))
-    this.player.on(ev.AdFinished, this.onAdFinished.bind(this))
-    this.player.on(ev.AdSkipped, this.onAdSkipped.bind(this))
-    this.player.on(ev.AdClicked, this.onAdClicked.bind(this))
-    this.player.on(ev.AdQuartile, this.onAdQuartile.bind(this))
-    this.player.on(ev.AdError, this.onAdError.bind(this))
+    this.player.on(ev.AdBreakStarted, this.onAdBreakStarted.bind(this));
+    this.player.on(ev.AdBreakFinished, this.onAdBreakFinished.bind(this));
+    this.player.on(ev.AdStarted, this.onAdStarted.bind(this));
+    this.player.on(ev.AdFinished, this.onAdFinished.bind(this));
+    this.player.on(ev.AdSkipped, this.onAdSkipped.bind(this));
+    this.player.on(ev.AdClicked, this.onAdClicked.bind(this));
+    this.player.on(ev.AdQuartile, this.onAdQuartile.bind(this));
+    this.player.on(ev.AdError, this.onAdError.bind(this));
   }
 
-  unregisterListeners () {
-    let ev = bitmovin.player.PlayerEvent
+  unregisterListeners() {
+    let ev = bitmovin.player.PlayerEvent;
 
-    this.player.off(ev.AdBreakStarted, this.onAdBreakStarted)
-    this.player.off(ev.AdBreakFinished, this.onAdBreakFinished)
-    this.player.off(ev.AdStarted, this.onAdStarted)
-    this.player.off(ev.AdFinished, this.onAdFinished)
-    this.player.off(ev.AdSkipped, this.onAdSkipped)
-    this.player.off(ev.AdClicked, this.onAdClicked)
-    this.player.off(ev.AdQuartile, this.onAdQuartile)
-    this.player.off(ev.AdError, this.onAdError)
+    this.player.off(ev.AdBreakStarted, this.onAdBreakStarted);
+    this.player.off(ev.AdBreakFinished, this.onAdBreakFinished);
+    this.player.off(ev.AdStarted, this.onAdStarted);
+    this.player.off(ev.AdFinished, this.onAdFinished);
+    this.player.off(ev.AdSkipped, this.onAdSkipped);
+    this.player.off(ev.AdClicked, this.onAdClicked);
+    this.player.off(ev.AdQuartile, this.onAdQuartile);
+    this.player.off(ev.AdError, this.onAdError);
   }
 
-  onAdBreakStarted (ev) {
-    this.sendAdBreakStart()
+  onAdBreakStarted(ev) {
+    this.sendAdBreakStart();
   }
 
-  onAdBreakFinished (ev) {
-    this.sendAdBreakEnd()
+  onAdBreakFinished(ev) {
+    this.sendAdBreakEnd();
   }
 
-  onAdStarted (e) {
-    this.sendRequest()
-    this.sendStart()
+  onAdStarted(e) {
+    this.sendRequest();
+    this.sendStart();
   }
 
-  onAdSkipped () {
-    this.sendEnd({ skipped: true })
+  onAdSkipped() {
+    this.sendEnd({ skipped: true });
   }
 
-  onAdFinished () {
-    this.sendEnd()
+  onAdFinished() {
+    this.sendEnd();
   }
 
-  onAdClicked (e) {
-    this.sendAdClick({ url: e.clickThroughUrl })
+  onAdClicked(e) {
+    this.sendAdClick({ url: e.clickThroughUrl });
   }
 
-  onAdQuartile (e) {
+  onAdQuartile(e) {
     let q = 0;
     switch (e.quartile) {
       case "firstQuartile":
@@ -89,12 +92,12 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
         break;
       case "thirdQuartile":
         q = 3;
-        break;        
+        break;
     }
-    this.sendAdQuartile({ quartile: q })
+    this.sendAdQuartile({ quartile: q });
   }
 
-  onAdError (e) {
-    this.sendError({code: e.code, message: e.message})
+  onAdError(e) {
+    this.sendError({ code: e.code, message: e.message });
   }
 }
