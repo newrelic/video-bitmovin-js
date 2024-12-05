@@ -1,6 +1,6 @@
-import * as nrvideo from "newrelic-video-core";
-import { version } from "../package.json";
-import { BitmovinAdTracker } from "./ads";
+import * as nrvideo from 'newrelic-video-core';
+import { version } from '../package.json';
+import { BitmovinAdTracker } from './ads';
 
 export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
@@ -9,7 +9,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   getTrackerName() {
-    return "bitmovin";
+    return 'bitmovin';
   }
 
   getTrackerVersion() {
@@ -17,11 +17,11 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   getPlayerName() {
-    return "Bitmovin";
+    return 'Bitmovin';
   }
 
   getInstrumentationProvider() {
-    return "New Relic";
+    return 'New Relic';
   }
 
   getInstrumentationName() {
@@ -46,6 +46,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
 
   getRenditionBitrate() {
     let qty = this.player.getVideoQuality();
+
     if (qty) {
       return qty.bitrate;
     }
@@ -78,7 +79,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     if (streamType in source) {
       return source[streamType];
     } else {
-      return "unknown";
+      return 'unknown';
     }
   }
 
@@ -288,7 +289,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onSeeked() {
-    if (this.player.getStreamType() === "progressive") {
+    if (this.player.getStreamType() === 'progressive') {
       this.sendSeekEnd();
     }
   }
@@ -300,7 +301,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onStallEnded() {
-    if (this.player.getStreamType() === "progressive") {
+    if (this.player.getStreamType() === 'progressive') {
       this.sendBufferEnd();
     }
   }

@@ -1,5 +1,5 @@
-import * as nrvideo from "newrelic-video-core";
-import { version } from "../package.json";
+import * as nrvideo from 'newrelic-video-core';
+import { version } from '../package.json';
 
 export class BitmovinAdTracker extends nrvideo.VideoTracker {
   constructor(player) {
@@ -7,7 +7,7 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   }
 
   getTrackerName() {
-    return "bitmovin-ads";
+    return 'bitmovin-ads';
   }
 
   getTrackerVersion() {
@@ -84,13 +84,13 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   onAdQuartile(e) {
     let q = 0;
     switch (e.quartile) {
-      case "firstQuartile":
+      case 'firstQuartile':
         q = 1;
         break;
-      case "midpoint":
+      case 'midpoint':
         q = 2;
         break;
-      case "thirdQuartile":
+      case 'thirdQuartile':
         q = 3;
         break;
     }
