@@ -98,6 +98,6 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   }
 
   onAdError(e) {
-    this.sendError({ code: e.code, message: e.message });
+    this.sendError({ errorCode: e.code, errorName: e.message });
   }
 }
