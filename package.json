@@ -20,7 +20,7 @@
   "author": "Jordi Aguilar",
   "license": "MIT",
   "dependencies": {
-    "newrelic-video-core": "git+https://github.com/newrelic/video-core-js.git#v0.32.4"
+    "newrelic-video-core": "git+https://github.com/newrelic/video-core-js.git#develop"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
