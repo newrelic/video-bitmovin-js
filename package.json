@@ -1,10 +1,10 @@
 {
   "name": "newrelic-video-bitmovin",
-  "version": "0.3.0",
+  "version": "3.0.0",
   "description": "New relic tracker for bitmovin",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "watch": "webpack -p --progress --color --watch",
     "watch:dev": "webpack --progress --color --watch",
@@ -20,7 +20,7 @@
   "author": "Jordi Aguilar",
   "license": "MIT",
   "dependencies": {
-    "newrelic-video-core": "git+https://github.com/newrelic/video-core-js.git#develop"
+    "newrelic-video-core": "github:newrelic/video-core-js#stable"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
