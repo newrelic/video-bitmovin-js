@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2025/02/20
+
+### New Event Type Introduced [VideoAction, VideoErrorAction, VideoAdAction, VideoCustomAction]
+
+- PageAction Deprecated.
+- New Attributes Introduced.
+
 ## [0.3.0] - 2024/12/05
 
 ### Update
