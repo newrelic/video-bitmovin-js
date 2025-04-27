@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2025-04-22
+
+- **Update:** The `errorName` attribute has been deprecated and `errorMessage` is introduced as its replacement.
+
 ## [3.0.0] - 2025/02/20
 
 ### New Event Type Introduced [VideoAction, VideoErrorAction, VideoAdAction, VideoCustomAction]
