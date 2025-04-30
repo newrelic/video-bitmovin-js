@@ -76,6 +76,9 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   getSrc() {
     let source = this.player.getSource();
     let streamType = this.player.getStreamType();
+
+    if (!source) return 'unknown';
+
     if (streamType in source) {
       return source[streamType];
     } else {
@@ -281,7 +284,11 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onError(e) {
-    this.sendError({ errorCode: e.code, errorName: e.message });
+    this.sendError({
+      errorCode: e?.code,
+      errorName: e?.name,
+      errorMessage: e?.message,
+    });
   }
 
   onSeek() {
