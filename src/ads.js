@@ -1,4 +1,4 @@
-import * as nrvideo from 'newrelic-video-core';
+import nrvideo from '@newrelic/video-core'
 import { version } from '../package.json';
 
 export class BitmovinAdTracker extends nrvideo.VideoTracker {
@@ -31,29 +31,27 @@ export class BitmovinAdTracker extends nrvideo.VideoTracker {
   // }
 
   registerListeners() {
-    let ev = bitmovin.player.PlayerEvent;
 
-    this.player.on(ev.AdBreakStarted, this.onAdBreakStarted.bind(this));
-    this.player.on(ev.AdBreakFinished, this.onAdBreakFinished.bind(this));
-    this.player.on(ev.AdStarted, this.onAdStarted.bind(this));
-    this.player.on(ev.AdFinished, this.onAdFinished.bind(this));
-    this.player.on(ev.AdSkipped, this.onAdSkipped.bind(this));
-    this.player.on(ev.AdClicked, this.onAdClicked.bind(this));
-    this.player.on(ev.AdQuartile, this.onAdQuartile.bind(this));
-    this.player.on(ev.AdError, this.onAdError.bind(this));
+    this.player.on('adbreakstarted', this.onAdBreakStarted.bind(this));
+    this.player.on('adbreakfinished', this.onAdBreakFinished.bind(this));
+    this.player.on('adstarted', this.onAdStarted.bind(this));
+    this.player.on('adfinished', this.onAdFinished.bind(this));
+    this.player.on('adskipped', this.onAdSkipped.bind(this));
+    this.player.on('adclicked', this.onAdClicked.bind(this));
+    this.player.on('adquartile', this.onAdQuartile.bind(this));
+    this.player.on('aderror', this.onAdError.bind(this));
   }
 
   unregisterListeners() {
-    let ev = bitmovin.player.PlayerEvent;
 
-    this.player.off(ev.AdBreakStarted, this.onAdBreakStarted);
-    this.player.off(ev.AdBreakFinished, this.onAdBreakFinished);
-    this.player.off(ev.AdStarted, this.onAdStarted);
-    this.player.off(ev.AdFinished, this.onAdFinished);
-    this.player.off(ev.AdSkipped, this.onAdSkipped);
-    this.player.off(ev.AdClicked, this.onAdClicked);
-    this.player.off(ev.AdQuartile, this.onAdQuartile);
-    this.player.off(ev.AdError, this.onAdError);
+    this.player.off('adbreakstarted', this.onAdBreakStarted);
+    this.player.off('adbreakfinished', this.onAdBreakFinished);
+    this.player.off('adstarted', this.onAdStarted);
+    this.player.off('adfinished', this.onAdFinished);
+    this.player.off('adskipped', this.onAdSkipped);
+    this.player.off('adclicked', this.onAdClicked);
+    this.player.off('adquartile', this.onAdQuartile);
+    this.player.off('aderror', this.onAdError);
   }
 
   onAdBreakStarted(ev) {

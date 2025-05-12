@@ -1,11 +1,13 @@
-import * as nrvideo from 'newrelic-video-core';
+import nrvideo from '@newrelic/video-core'
 import { version } from '../package.json';
 import { BitmovinAdTracker } from './ads';
+import { Player, PlayerEvent } from 'bitmovin-player';
 
 export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
     super(player, options);
     this._trackerReadySent = false;
+    nrvideo.Core.addTracker(this);
   }
 
   getTrackerName() {
@@ -117,138 +119,141 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   registerListeners() {
-    let ev = bitmovin.player.PlayerEvent;
 
     //NOTE: event that are too verbose are commented out.
     nrvideo.Log.debugCommonVideoEvents(this.player, [
       null,
-      ev.AdBreakFinished,
-      ev.AdBreakStarted,
-      ev.AdClicked,
-      ev.AdError,
-      ev.AdFinished,
-      ev.AdInteraction,
-      ev.AdLinearityChanged,
-      ev.AdManifestLoaded,
-      ev.AdQuartile,
-      ev.AdSkipped,
-      ev.AdStarted,
-      ev.AirplayAvailable,
-      ev.AirplayChanged,
-      ev.AspectRatioChanged,
+      'adbreakfinished',
+      'adbreakstarted',
+      'adclicked',
+      'aderror',
+      'adfinished',
+      'adinteraction',
+      'adlinearitychanged',
+      'admanifestloaded',
+      'adquartile',
+      'adskipped',
+      'adstarted',
+      'airplayavailable',
+      'airplaychanged',
+      'aspectratiochanged',
       //ev.AudioAdaptation,
-      ev.AudioAdded,
-      ev.AudioChanged,
-      ev.AudioDownloadQualityChange,
-      ev.AudioDownloadQualityChanged,
-      ev.AudioPlaybackQualityChanged,
-      ev.AudioQualityAdded,
-      ev.AudioQualityChanged,
-      ev.AudioQualityRemoved,
-      ev.AudioRemoved,
-      ev.CastAvailable,
-      ev.CastStart,
-      ev.CastStarted,
-      ev.CastStopped,
-      ev.CastWaitingForDevice,
-      ev.CueEnter,
-      ev.CueExit,
-      ev.CueParsed,
-      ev.CueUpdate,
-      ev.DVRWindowExceeded,
-      ev.Destroy,
+      'audioadded',
+      'audiochanged',
+      'audiodownloadqualitychange',
+      'audiodownloadqualitychanged',
+      'audioplaybackqualitychanged',
+      'audioqualityadded',
+      'audioqualitychanged',
+      'audioqualityremoved',
+      'audioremoved',
+      'castavailable',
+      'caststart',
+      'caststarted',
+      'caststopped',
+      'castwaitingfordevice',
+      'cueenter',
+      'cueexit',
+      'cueparsed',
+      'cueupdate',
+      'dvrwindowexceeded',
+      'destroy',
       //ev.DownloadFinished,
-      ev.DrmLicenseAdded,
-      ev.DurationChanged,
-      ev.Error,
-      ev.LatencyModeChanged,
-      ev.LicenseValidated,
-      ev.Metadata,
-      ev.MetadataChanged,
-      ev.MetadataParsed,
-      ev.ModuleReady,
-      ev.Muted,
-      ev.OverlayAdStarted,
-      ev.Paused,
-      ev.PeriodSwitch,
-      ev.PeriodSwitched,
-      ev.Play,
-      ev.PlaybackFinished,
-      ev.PlaybackSpeedChanged,
-      ev.PlayerResized,
-      ev.Playing,
-      ev.Ready,
-      ev.Seek,
-      ev.Seeked,
-      ev.SegmentPlayback,
+      'drmlicenseadded',
+      'durationchanged',
+      'error',
+      'latencymodechanged',
+      'licensevalidated',
+      'metadata',
+      'metadatachanged',
+      'metadataparsed',
+      'moduleready',
+      'muted',
+      'overlayadstarted',
+      'paused',
+      'periodswitch',
+      'periodswitched',
+      'play',
+      'playbackfinished',
+      'playbackspeedchanged',
+      'playerresized',
+      'playing',
+      'ready',
+      'seek',
+      'seeked',
+      'segmentplayback',
       //ev.SegmentRequestFinished,
-      ev.ShowAirplayTargetPicker,
-      ev.SourceLoaded,
-      ev.SourceUnloaded,
-      ev.StallEnded,
-      ev.StallStarted,
-      ev.SubtitleAdded,
-      ev.SubtitleDisable,
-      ev.SubtitleDisabled,
-      ev.SubtitleEnable,
-      ev.SubtitleEnabled,
-      ev.SubtitleRemoved,
-      ev.TargetLatencyChanged,
+      'showairplaytargetpicker',
+      'sourceloaded',
+      'sourceunloaded',
+      'stallended',
+      'stallstarted',
+      'subtitleadded',
+      'subtitledisable',
+      'subtitledisabled',
+      'subtitleenable',
+      'subtitleenabled',
+      'subtitleremoved',
+      'targetlatencychanged',
       //ev.TimeChanged,
-      ev.TimeShift,
-      ev.TimeShifted,
-      ev.Unmuted,
-      ev.VRStereoChanged,
-      ev.VRViewingDirectionChange,
-      ev.VRViewingDirectionChanged,
+      'timeshift',
+      'timeshifted',
+      'unmuted',
+      'vrstereochanged',
+      'vrviewingdirectionchange',
+      'vrviewingdirectionchanged',
       //ev.VideoAdaptation,
-      ev.VideoDownloadQualityChange,
-      ev.VideoDownloadQualityChanged,
-      ev.VideoPlaybackQualityChanged,
-      ev.VideoQualityAdded,
-      ev.VideoQualityChanged,
-      ev.VideoQualityRemoved,
-      ev.ViewModeChanged,
-      ev.VolumeChanged,
-      ev.Warning,
+      'videodownloadqualitychange',
+      'videodownloadqualitychanged',
+      'videoplaybackqualitychanged',
+      'videoqualityadded',
+      'videoqualitychanged',
+      'videoqualityremoved',
+      'viewmodechanged',
+      'volumechanged',
+      'warning',
     ]);
 
-    this.player.on(ev.SourceLoaded, this.onDownload.bind(this));
-    this.player.on(ev.Ready, this.onReady.bind(this));
-    this.player.on(ev.Play, this.onPlay.bind(this));
-    this.player.on(ev.Playing, this.onPlaying.bind(this));
-    this.player.on(ev.Paused, this.onPaused.bind(this));
-    this.player.on(ev.PlaybackFinished, this.onFinish.bind(this));
-    this.player.on(ev.Error, this.onError.bind(this));
-    this.player.on(ev.Seek, this.onSeek.bind(this));
-    this.player.on(ev.Seeked, this.onSeeked.bind(this));
-    this.player.on(ev.StallStarted, this.onStallStart.bind(this));
-    this.player.on(ev.StallEnded, this.onStallEnded.bind(this));
-    this.player.on(ev.SegmentPlayback, this.onSegmentPlayback.bind(this));
+   
+    this.player.on('sourceloaded', this.onDownload.bind(this));
+    this.player.on('ready', this.onReady.bind(this));
+    this.player.on('play', this.onPlay.bind(this));
+    this.player.on('playing', this.onPlaying.bind(this));
+    this.player.on('paused', this.onPaused.bind(this));
+    this.player.on('playbackfinished', this.onFinish.bind(this));
+    this.player.on('error', this.onError.bind(this));
+    this.player.on('seek', this.onSeek.bind(this));
+    this.player.on('seeked', this.onSeeked.bind(this));
+    this.player.on('stallstarted', this.onStallStart.bind(this));
+    this.player.on('stallended', this.onStallEnded.bind(this));
+    this.player.on('segmentplayback', this.onSegmentPlayback.bind(this));
     // NOTE: In Bitmovin v7 the event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
     this.player.on(
-      ev.VideoPlaybackQualityChanged,
+      'videoplaybackqualitychanged',
       this.onQualityChange.bind(this)
     );
   }
 
   unregisterListeners() {
-    let ev = bitmovin.player.PlayerEvent;
+    console.log('Bitmovin player unregister', bitmovin.player);
+    console.log('Bitmovin player unregister2', bitmovin.player.PlayerEvent);
+    // let ev = bitmovin.player.PlayerEvent;
+    // let ev = PlayerEvent;
 
-    this.player.off(ev.SourceLoaded, this.onDownload);
-    this.player.off(ev.Ready, this.onReady);
-    this.player.off(ev.Play, this.onPlay);
-    this.player.off(ev.Playing, this.onPlaying);
-    this.player.off(ev.Paused, this.onPaused);
-    this.player.off(ev.PlaybackFinished, this.onFinish);
-    this.player.off(ev.Error, this.onError);
-    this.player.off(ev.Sekk, this.onSeek);
-    this.player.off(ev.Seeked, this.onSeeked);
-    this.player.off(ev.StallStarted, this.onStallStart);
-    this.player.off(ev.StallEnded, this.onStallEnded);
-    this.player.off(ev.SegmentPlayback, this.onSegmentPlayback);
+    this.player.off('sourceloaded', this.onDownload);
+    this.player.off('ready', this.onReady);
+    this.player.off('play', this.onPlay);
+    this.player.off('playing', this.onPlaying);
+    this.player.off('paused', this.onPaused);
+    this.player.off('playbackfinished', this.onFinish);
+    this.player.off('error', this.onError);
+    this.player.off('seek', this.onSeek);
+    this.player.off('seeked', this.onSeeked);
+    this.player.off('stallstarted', this.onStallStart);
+    this.player.off('stallended', this.onStallEnded);
+    this.player.off('segmentplayback', this.onSegmentPlayback);
     // NOTE: In Bitmovin v7 the event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
-    this.player.off(ev.VideoPlaybackQualityChanged, this.onQualityChange);
+    this.player.off('videoplaybackqualitychanged', this.onQualityChange);
   }
 
   onDownload(e) {
