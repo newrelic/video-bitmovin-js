@@ -1,7 +1,6 @@
 import nrvideo from '@newrelic/video-core'
 import { version } from '../package.json';
 import { BitmovinAdTracker } from './ads';
-import { Player, PlayerEvent } from 'bitmovin-player';
 
 export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
