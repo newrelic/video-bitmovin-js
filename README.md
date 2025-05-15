@@ -32,16 +32,18 @@ To integrate New Relic Tracker Agent into your web application effectively, you'
 ```
 To make the tracker available to your application, install via [NPM](https://docs.npmjs.com/cli/v8/commands/npm-install) or [Yarn](https://classic.yarnpkg.com/lang/en/docs/cli/install/).
 ```shell
-$ npm install @newrelic/video-videojs
+$ npm install @newrelic/video-bitmovin
 ```
 
 ```shell
-$ yarn add @newrelic/video-videojs
+$ yarn add @newrelic/video-bitmovin
 ```
 
 ## Instantiating the Bitmovin Tracker
 
 ```javascript
+// Add import statement
+import BitmovinTracker from "@newrelic/video-bitmovin"
 // Add a BitmovinTracker
 const tracker = new BitmovinTracker(player);
 
