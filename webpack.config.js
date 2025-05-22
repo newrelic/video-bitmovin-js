@@ -21,7 +21,7 @@ var license =
     entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, './dist/umd'),
-      filename: 'bitmovin' + '.min.js',
+      filename: 'newrelic-video-bitmovin.min.js',
       library: 'BitmovinTracker',
       libraryTarget: 'umd',
       libraryExport: "default", 
