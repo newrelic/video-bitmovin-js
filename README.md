@@ -30,20 +30,30 @@ To integrate New Relic Tracker Agent into your web application effectively, you'
   </body>
 </html>
 ```
+To make the tracker available to your application, install via [NPM](https://docs.npmjs.com/cli/v8/commands/npm-install) or [Yarn](https://classic.yarnpkg.com/lang/en/docs/cli/install/).
+```shell
+$ npm install @newrelic/video-bitmovin
+```
+
+```shell
+$ yarn add @newrelic/video-bitmovin
+```
 
 ## Instantiating the Bitmovin Tracker
 
 ```javascript
+// Add import statement
+import BitmovinTracker from "@newrelic/video-bitmovin"
 // Add a BitmovinTracker
-nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player));
+const tracker = new BitmovinTracker(player);
 
 // For setting userId
-nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player)).setUserId(
+tracker.setUserId(
   'userId'
 );
 
 //For setting custom attributes const tracker
-const tracker = new nrvideo.BitmovinjsTracker(player, {
+const tracker = new BitmovinTracker(player, {
   customData: {
     contentTitle: 'Override Existing Title',
     customPlayerName: 'myGreatPlayer',
@@ -53,9 +63,7 @@ const tracker = new nrvideo.BitmovinjsTracker(player, {
 
 // For Sending custom Action with Attributes
 
-const tracker = new nrvideo.BitmovinTracker(player);
-
-nrvideo.Core.addTracker(tracker);
+const tracker = new BitmovinTracker(player);
 
 tracker.sendCustom('CUSTOM_ACTION', 'state time', {
   test1: 'value1',
