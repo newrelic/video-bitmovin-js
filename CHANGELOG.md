@@ -2,15 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.1] - 2025-07-28
+
+### Update
+
+- **IE11 Compatible:** The package now offers full functionality on Internet Explorer 11, extending support to legacy browser environments.
+- **Standalone Agent:** This tracker can now operate independently without a browser agent.
+
 ## [3.1.0] - 2025-05-27
 
 ### Enhancements
 
-* **Publishing to npm:** The package can now be published to npm, making it easily accessible.
+- **Publishing to npm:** The package can now be published to npm, making it easily accessible.
 
 ### Build
 
-* **Distribution Formats:** Added `cjs`, `esm`, and `umd` builds to the `dist` folder, ensuring compatibility with CommonJS, ES Modules, and UMD module formats.
+- **Distribution Formats:** Added `cjs`, `esm`, and `umd` builds to the `dist` folder, ensuring compatibility with CommonJS, ES Modules, and UMD module formats.
 
 ## [3.0.1] - 2025-04-22
 
