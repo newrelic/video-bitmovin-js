@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- newrelic browser agent. REMEMBER TO REPLACE THIS SCRIPT WITH YOUR OWN BROWSER AGENT -->
-  <script type="text/javascript" src="agent.js"></script>
+  <!-- <script type="text/javascript" src="agent.js"></script> -->
   <!-- new relic tracker -->
   <script src="../dist/umd/newrelic-video-bitmovin.min.js"></script>
   <!-- bitdash player -->
@@ -48,13 +48,25 @@
 
     // Init player
     const player = new bitmovin.player.Player(document.getElementById('player'), conf);
+    const options = {
+        info: {
+          beacon: 'staging-bam-cell.nr-data.net',
+          errorBeacon: 'staging-bam-cell.nr-data.net',
+          licenseKey: 'NRBR-XXXXXXXXXXXXXX',
+          applicationID: 'XXXXXXXXXX',
+          sa: 1,
+        },
+      };
 
-    const tracker = new BitmovinTracker(player);
+    
+      const tracker = new BitmovinTracker(player, options);
+    
     
     // Init New Relic Tracker  
 
     player.load(conf.source).then(
     player => {
+        
         console.log('Successfully created Bitmovin Player instance')
     },
     reason => {
