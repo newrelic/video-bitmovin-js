@@ -6,8 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Update
 
-- **IE11 Compatible:** The package now offers full functionality on Internet Explorer 11, extending support to legacy browser environments.
-- **Standalone Agent:** This tracker can now operate independently without a browser agent.
+## [3.1.1] - 2025-05-28
+
+### Changed
+
+- **Standalone Agent:** This tracker now operates independently with its own authorization details, removing the dependency on a browser agent.
 
 ## [3.1.0] - 2025-05-27
 
