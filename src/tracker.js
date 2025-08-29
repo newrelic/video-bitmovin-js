@@ -1,4 +1,4 @@
-import nrvideo from '@newrelic/video-core'
+import nrvideo from '@newrelic/video-core';
 import { version } from '../package.json';
 import { BitmovinAdTracker } from './ads';
 
@@ -6,7 +6,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
     super(player, options);
     this._trackerReadySent = false;
-    nrvideo.Core.addTracker(this);
+    nrvideo.Core.addTracker(this, options);
   }
 
   getTrackerName() {
@@ -118,7 +118,6 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   registerListeners() {
-
     //NOTE: event that are too verbose are commented out.
     nrvideo.Log.debugCommonVideoEvents(this.player, [
       null,
@@ -213,7 +212,6 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
       'warning',
     ]);
 
-   
     this.player.on('sourceloaded', this.onDownload.bind(this));
     this.player.on('ready', this.onReady.bind(this));
     this.player.on('play', this.onPlay.bind(this));

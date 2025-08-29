@@ -4,10 +4,6 @@
 
 New Relic video tracking for Bitmovin Player.
 
-## Requirements
-
-This video monitor solutions works on top of New Relic's **Browser Agent**.
-
 ## Build
 
 Install dependencies:
@@ -37,7 +33,14 @@ Load **scripts** inside `dist` folder into your page.
 ```
 
 ```javascript
-nrvideo.Core.addTracker(new nrvideo.BitmovinTracker(player));
+options = {
+  info: {
+    beacon: 'XXXXXXXXXXX',
+    licenseKey: 'XXXXXXXXXXXXX',
+    applicationID: 'XXXXXXX',
+  },
+};
+const trackser = new BitmovinTracker(player, options);
 ```
 
 ## Release
