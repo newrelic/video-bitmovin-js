@@ -40,7 +40,7 @@ options = {
     applicationID: 'XXXXXXX',
   },
 };
-const trackser = new BitmovinTracker(player, options);
+const tracker = new BitmovinTracker(player, options);
 ```
 
 ## Release
