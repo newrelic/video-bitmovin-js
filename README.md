@@ -6,13 +6,12 @@ The New Relic Bitmovin Tracker enhances your media applications by tracking vide
 
 - The Bitmovin tracker is available as a ready-to-use JavaScript snippet for easy copy-paste integration.
 - New Relic Bitmovin tracker auto-detects events emitted by Bitmovin Player.
-- Ensure that the **Browser agent** is successfully instrumented before deploying the media tracker.
 - For questions and feedback on this package, please visit the [Explorer's Hub](https://discuss.newrelic.com), New Relic's community support forum.
 - Looking to contribute to the Player Name agent code base? See [DEVELOPING.md](./DEVELOPING.md) for instructions on building and testing the browser agent library, and Contributors.
 
 ## Adding The Bitmovin Tracker To Your Project
 
-To integrate New Relic Tracker Agent into your web application effectively, you'll need to instrument the Browser Agent code first and then add the player script. Below is a guide on how to do this within your HTML file:
+To integrate New Relic Tracker Agent into your web application effectively, Below is a guide on how to do this within your HTML file for using snippet code:
 
 ```html
 <!DOCTYPE html>
@@ -21,7 +20,7 @@ To integrate New Relic Tracker Agent into your web application effectively, you'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New Relic Tracker Integration</title>
-    <script src="path/to/browser-agent.js"></script>
+
     <!-- snippet code generated  -->
     <script src="path/to/Bitmovin-tracker.js"></script>
   </head>
@@ -30,7 +29,9 @@ To integrate New Relic Tracker Agent into your web application effectively, you'
   </body>
 </html>
 ```
+
 To make the tracker available to your application, install via [NPM](https://docs.npmjs.com/cli/v8/commands/npm-install) or [Yarn](https://classic.yarnpkg.com/lang/en/docs/cli/install/).
+
 ```shell
 $ npm install @newrelic/video-bitmovin
 ```
@@ -43,17 +44,26 @@ $ yarn add @newrelic/video-bitmovin
 
 ```javascript
 // Add import statement
-import BitmovinTracker from "@newrelic/video-bitmovin"
+import BitmovinTracker from '@newrelic/video-bitmovin';
 // Add a BitmovinTracker
-const tracker = new BitmovinTracker(player);
+
+// Get Application info from onboarding steps of new relic, from tiles Place a JavaScript Snippet Code
+const options = {
+  info: {
+    beacon: 'xxxxxxxxxx',
+    applicationID: 'xxxxxxx',
+    licenseKey: 'xxxxxxxxxxx',
+  },
+};
+
+const tracker = new BitmovinTracker(player, options);
 
 // For setting userId
-tracker.setUserId(
-  'userId'
-);
+tracker.setUserId('userId');
 
-//For setting custom attributes const tracker
-const tracker = new BitmovinTracker(player, {
+// For Sending custom Attributes
+
+tracker.sendOptions({
   customData: {
     contentTitle: 'Override Existing Title',
     customPlayerName: 'myGreatPlayer',
@@ -63,12 +73,13 @@ const tracker = new BitmovinTracker(player, {
 
 // For Sending custom Action with Attributes
 
-const tracker = new BitmovinTracker(player);
-
-tracker.sendCustom('CUSTOM_ACTION', 'state time', {
+tracker.sendCustom('CUSTOM_ACTION', {
   test1: 'value1',
   test2: 'value2',
 });
+
+// For setting different harvest interval (1s to 5 mins)
+tracker.setHarvestInterval(40000); // setting for 40 secs
 ```
 
 ## Data Model
