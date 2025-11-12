@@ -49,7 +49,15 @@
     // Init player
     const player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
-    const tracker = new BitmovinTracker(player);
+    const options = {
+      info: {
+        beacon: 'xxxxxxxxxx',
+        licenseKey: 'xxxxxxxxxxx',
+        applicationID: 'xxxxxxxxx',
+      }
+}
+
+    const tracker = new BitmovinTracker(player, options);
     
     // Init New Relic Tracker  
 

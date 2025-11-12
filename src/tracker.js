@@ -1,4 +1,4 @@
-import nrvideo from '@newrelic/video-core'
+import nrvideo from '@newrelic/video-core';
 import { version } from '../package.json';
 import { BitmovinAdTracker } from './ads';
 
@@ -6,7 +6,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
     super(player, options);
     this._trackerReadySent = false;
-    nrvideo.Core.addTracker(this);
+    nrvideo.Core.addTracker(this, options);
   }
 
   getTrackerName() {
@@ -118,7 +118,6 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   registerListeners() {
-
     //NOTE: event that are too verbose are commented out.
     nrvideo.Log.debugCommonVideoEvents(this.player, [
       null,
@@ -213,24 +212,35 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
       'warning',
     ]);
 
-   
-    this.player.on('sourceloaded', this.onDownload.bind(this));
-    this.player.on('ready', this.onReady.bind(this));
-    this.player.on('play', this.onPlay.bind(this));
-    this.player.on('playing', this.onPlaying.bind(this));
-    this.player.on('paused', this.onPaused.bind(this));
-    this.player.on('playbackfinished', this.onFinish.bind(this));
-    this.player.on('error', this.onError.bind(this));
-    this.player.on('seek', this.onSeek.bind(this));
-    this.player.on('seeked', this.onSeeked.bind(this));
-    this.player.on('stallstarted', this.onStallStart.bind(this));
-    this.player.on('stallended', this.onStallEnded.bind(this));
-    this.player.on('segmentplayback', this.onSegmentPlayback.bind(this));
+    // BIND LISTENER METHODS
+    this.onDownload = this.onDownload.bind(this);
+    this.onReady = this.onReady.bind(this);
+    this.onPlay = this.onPlay.bind(this);
+    this.onPlaying = this.onPlaying.bind(this);
+    this.onPaused = this.onPaused.bind(this);
+    this.onFinish = this.onFinish.bind(this);
+    this.onError = this.onError.bind(this);
+    this.onSeek = this.onSeek.bind(this);
+    this.onSeeked = this.onSeeked.bind(this);
+    this.onStallStart = this.onStallStart.bind(this);
+    this.onStallEnded = this.onStallEnded.bind(this);
+    this.onSegmentPlayback = this.onSegmentPlayback.bind(this);
+    this.onQualityChange = this.onQualityChange.bind(this);
+
+    this.player.on('sourceloaded', this.onDownload);
+    this.player.on('ready', this.onReady);
+    this.player.on('play', this.onPlay);
+    this.player.on('playing', this.onPlaying);
+    this.player.on('paused', this.onPaused);
+    this.player.on('playbackfinished', this.onFinish);
+    this.player.on('error', this.onError);
+    this.player.on('seek', this.onSeek);
+    this.player.on('seeked', this.onSeeked);
+    this.player.on('stallstarted', this.onStallStart);
+    this.player.on('stallended', this.onStallEnded);
+    this.player.on('segmentplayback', this.onSegmentPlayback);
     // NOTE: In Bitmovin v7 the event was ON_VIDEO_QUALITY_CHANGED, not sure if it translated to VideoPlaybackQualityChanged or VideoDownloadQualityChanged
-    this.player.on(
-      'videoplaybackqualitychanged',
-      this.onQualityChange.bind(this)
-    );
+    this.player.on('videoplaybackqualitychanged', this.onQualityChange);
   }
 
   unregisterListeners() {
