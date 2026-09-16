@@ -2,16 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Added
-
-* **Browser Entry Point:** Added dedicated `@newrelic/video-bitmovin/browser` import for browser-only environments, excluding connected-device pipeline code to keep the bundle lean.
-
-### Dependencies
-
-* **video-core:** Updated the bundled `@newrelic/video-core` dependency to v5.1.0.
-
 ## [3.1.0] - 2025-05-27
 
 ### Enhancements
