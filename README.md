@@ -82,6 +82,29 @@ tracker.sendCustom('CUSTOM_ACTION', {
 tracker.setHarvestInterval(40000); // setting for 40 secs
 ```
 
+### Browser Player Setup
+
+**Obtain your credentials:**
+
+1. Log in to [one.newrelic.com](https://one.newrelic.com)
+2. Navigate to the video agent onboarding flow
+3. Copy your credentials: `licenseKey`, `beacon`, and `applicationID`
+
+Import from the `/browser` subpath — this build includes only the browser agent pipeline and excludes all connected-device code, keeping the bundle lean.
+
+```javascript
+import BitmovinTracker from '@newrelic/video-bitmovin/browser';
+
+// Initialize tracker with your Bitmovin player instance
+const tracker = new BitmovinTracker(player, {
+  info: {
+    licenseKey:    'YOUR_LICENSE_KEY',
+    beacon:        'YOUR_BEACON_URL',
+    applicationID: 'YOUR_APP_ID',
+  },
+});
+```
+
 ## Data Model
 
 To understand which actions and attributes are captured and emitted by the Bitmovin Player under different event types, see [DataModel.md](./DATAMODEL.md).
