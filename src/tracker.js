@@ -244,8 +244,8 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   unregisterListeners() {
-    console.log('Bitmovin player unregister', bitmovin.player);
-    console.log('Bitmovin player unregister2', bitmovin.player.PlayerEvent);
+    // console.log('Bitmovin player unregister', bitmovin.player);
+    // console.log('Bitmovin player unregister2', bitmovin.player.PlayerEvent);
     // let ev = bitmovin.player.PlayerEvent;
     // let ev = PlayerEvent;
 
