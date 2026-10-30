@@ -44,7 +44,7 @@ $ yarn add @newrelic/video-bitmovin
 
 ```javascript
 // Add import statement
-import BitmovinTracker from '@newrelic/video-bitmovin';
+import BitmovinTracker from '@newrelic/video-bitmovin/browser';
 // Add a BitmovinTracker
 
 // Get Application info from onboarding steps of new relic, from tiles Place a JavaScript Snippet Code
