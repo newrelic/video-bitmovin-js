@@ -123,4 +123,91 @@ module.exports = [
       }),
     ],
   },
+  // BROWSER ENTRY: resolve.alias rewires @newrelic/video-core -> browser subpath
+  // (excludes the unused connected-device pipeline from the bundle)
+  // commonjs build
+  {
+    entry: './src/entry-browser.js',
+    output: {
+      path: path.resolve(__dirname, './dist/cjs/browser'),
+      filename: 'index.js',
+      libraryTarget: 'commonjs2',
+    },
+    resolve: {
+      alias: {
+        '@newrelic/video-core$': require.resolve('@newrelic/video-core/browser'),
+      },
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [
+        {
+          test: /\.(js|mjs|cjs)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [['@babel/preset-env', { targets: 'defaults' }]],
+            },
+          },
+        },
+      ],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
+    plugins: [
+      new webpack.BannerPlugin({
+        banner: license,
+        entryOnly: true,
+      }),
+    ],
+  },
+  // ES Module build
+  {
+    entry: './src/entry-browser.js',
+    output: {
+      path: path.resolve(__dirname, './dist/esm/browser'),
+      filename: 'index.js',
+      library: {
+        type: 'module',
+      },
+    },
+    resolve: {
+      alias: {
+        '@newrelic/video-core$': require.resolve('@newrelic/video-core/browser'),
+      },
+    },
+    experiments: {
+      outputModule: true,
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [
+        {
+          test: /\.(js|mjs|cjs)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['@babel/preset-env', { targets: 'defaults', modules: false }],
+              ],
+            },
+          },
+        },
+      ],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
+    plugins: [
+      new webpack.BannerPlugin({
+        banner: license,
+        entryOnly: true,
+      }),
+    ],
+  },
 ];
