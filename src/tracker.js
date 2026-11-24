@@ -6,6 +6,7 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   constructor(player, options) {
     super(player, options);
     this._trackerReadySent = false;
+    this._lastRenditionBitrate = undefined;
     nrvideo.Core.addTracker(this, options);
   }
 
@@ -51,6 +52,21 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
     if (qty) {
       return qty.bitrate;
     }
+  }
+
+  // video-core 4.0.0 computed contentBitrate/adBitrate as getBitrate() || getWebkitBitrate() ||
+  // getRenditionBitrate() - since this tracker overrode only getRenditionBitrate(), that fallback
+  // chain is what actually populated contentBitrate/adBitrate all along (getWebkitBitrate() reads
+  // this.tag, which this tracker never sets; it uses this.player instead). video-core 5.x removed
+  // the fallback chain in favor of getBitrate() alone, and also moved contentManifestBitrate and
+  // getRenditionShift()'s up/down detection onto a new getManifestBitrate() method. Overriding both
+  // here keeps the existing signal flowing instead of silently reporting 0.
+  getBitrate() {
+    return this.getRenditionBitrate();
+  }
+
+  getManifestBitrate() {
+    return this.getRenditionBitrate();
   }
 
   getRenditionName() {
@@ -333,6 +349,11 @@ export default class BitmovinTracker extends nrvideo.VideoTracker {
   }
 
   onQualityChange() {
-    this.sendRenditionChanged();
+    // video-core 5.x no longer computes the up/down shift itself (getRenditionShift() is never
+    // called internally anymore) - it expects the caller to pass oldBitrate/newBitrate explicitly.
+    // Without this, every rendition-change event would silently stop reporting `shift` entirely.
+    const newBitrate = this.getRenditionBitrate();
+    this.sendRenditionChanged({ oldBitrate: this._lastRenditionBitrate, newBitrate });
+    this._lastRenditionBitrate = newBitrate;
   }
 }
